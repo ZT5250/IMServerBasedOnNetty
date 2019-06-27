@@ -14,7 +14,9 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.AttributeKey;
 import the.flash.codec.PacketCodecHandler;
 import the.flash.codec.Spliter;
+import the.flash.handler.IMIdleStateHandler;
 import the.flash.server.handler.AuthHandler;
+import the.flash.server.handler.HeartBeatRequestHandler;
 import the.flash.server.handler.IMHandler;
 import the.flash.server.handler.LifeCyCleTestHandler;
 import the.flash.server.handler.LoginRequestHandler;
@@ -47,10 +49,12 @@ public class NettyServer {
                     protected void initChannel(NioSocketChannel ch) {
                         System.out.println(ch.attr(clientKey).get());
                         ch.pipeline()
+                        .addLast(new IMIdleStateHandler())
                         .addLast(new LifeCyCleTestHandler())
                         .addLast(new Spliter(Integer.MAX_VALUE, 7, 4))
                         .addLast(PacketCodecHandler.INSTANCE)
                         .addLast(LoginRequestHandler.INSTANCE)
+                        .addLast(HeartBeatRequestHandler.INSTANCE)
                         .addLast(AuthHandler.INSTANCE)
                         .addLast(IMHandler.INSTANCE);
                     }

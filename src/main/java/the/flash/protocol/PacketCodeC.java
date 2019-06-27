@@ -1,8 +1,10 @@
 package the.flash.protocol;
 
 import io.netty.buffer.ByteBuf;
+import the.flash.protocol.command.Command;
 import the.flash.protocol.request.CreateGroupRequestPacket;
 import the.flash.protocol.request.GroupMessageRequestPacket;
+import the.flash.protocol.request.HeartBeatRequestPacket;
 import the.flash.protocol.request.JoinGroupRequestPacket;
 import the.flash.protocol.request.ListGroupMembersRequestPacket;
 import the.flash.protocol.request.LoginRequestPacket;
@@ -10,6 +12,7 @@ import the.flash.protocol.request.MessageRequestPacket;
 import the.flash.protocol.request.QuitGroupRequestPacket;
 import the.flash.protocol.response.CreateGroupResponsePacket;
 import the.flash.protocol.response.GroupMessageResponsePacket;
+import the.flash.protocol.response.HeartBeatResponsePacket;
 import the.flash.protocol.response.JoinGroupResponsePacket;
 import the.flash.protocol.response.ListGroupMembersResponsePacket;
 import the.flash.protocol.response.LoginResponsePacket;
@@ -58,6 +61,8 @@ public class PacketCodeC {
 		packetTypeMap.put(LISTGROUPMEMBERS_RESPONSE, ListGroupMembersResponsePacket.class);
 		packetTypeMap.put(GROUPMESSAGE_REQUEST, GroupMessageRequestPacket.class);
 		packetTypeMap.put(GROUPMESSAGE_RESPONSE, GroupMessageResponsePacket.class);
+		packetTypeMap.put(Command.HEARTBEAT_REQUEST, HeartBeatRequestPacket.class);
+		packetTypeMap.put(Command.HEARTBEAT_RESPONSE, HeartBeatResponsePacket.class);
 
 		serializerMap = new HashMap<>();
 		Serializer serializer = new JSONSerializer();

@@ -14,6 +14,7 @@ import the.flash.client.console.LoginConsoleCommand;
 import the.flash.client.handler.ClientLifeCyCleTestHandler;
 import the.flash.client.handler.CreateGroupResponseHandler;
 import the.flash.client.handler.GroupMessageResponseHandler;
+import the.flash.client.handler.HeartBeatTimerHandler;
 import the.flash.client.handler.JoinGroupResponseHandler;
 import the.flash.client.handler.ListGroupMembersResponseHandler;
 import the.flash.client.handler.LoginResponseHandler;
@@ -22,6 +23,7 @@ import the.flash.client.handler.QuitGroupResponseHandler;
 import the.flash.codec.PacketDecoder;
 import the.flash.codec.PacketEncoder;
 import the.flash.codec.Spliter;
+import the.flash.handler.IMIdleStateHandler;
 import the.flash.util.ClientSessionUtil;
 
 import java.util.Date;
@@ -61,6 +63,7 @@ public class NettyClient {
 					@Override
 					public void initChannel(SocketChannel ch) {
 						ch.pipeline()
+						.addLast(new IMIdleStateHandler())
 						.addLast(new ClientLifeCyCleTestHandler())
 						.addLast(new Spliter(Integer.MAX_VALUE, 7, 4))
 						.addLast(new PacketDecoder())
@@ -71,7 +74,8 @@ public class NettyClient {
 						.addLast(new QuitGroupResponseHandler())
 						.addLast(new ListGroupMembersResponseHandler())
 						.addLast(new GroupMessageResponseHandler())
-						.addLast(new PacketEncoder());
+						.addLast(new PacketEncoder())
+						.addLast(new HeartBeatTimerHandler());
 					}
 				});
 
