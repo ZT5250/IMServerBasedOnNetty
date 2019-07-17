@@ -28,6 +28,8 @@ import the.flash.util.ClientSessionUtil;
 
 import java.util.Date;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -42,6 +44,7 @@ public class NettyClient {
 	public static final AttributeKey<String> CHANNELATTRUSERNAME = AttributeKey.newInstance("USERNAME");
 	public static final AttributeKey<String> CHANNELATTRUSERPASS = AttributeKey.newInstance("USERPASS");
 	public static final AttributeKey<String> SEVER_RES_UUID = AttributeKey.newInstance("SEVER_RES_UUID");
+	public static ExecutorService cachedPool = Executors.newCachedThreadPool();
 	public static void main(String[] args) {
 		NioEventLoopGroup workerGroup = new NioEventLoopGroup();
 
@@ -80,8 +83,10 @@ public class NettyClient {
 				});
 
 		// 4.建立连接
-		for (int i = 0; i < 1; i++) {
-			connect(bootstrap, "localhost", 8000, MAX_RETRY);
+		for (int i = 0; i < 6000; i++) {
+			cachedPool.submit(()->{
+				connect(bootstrap, "localhost", 8000, MAX_RETRY);
+			});
 		}
 	}
 

@@ -11,7 +11,7 @@ public class LifeCyCleTestHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
 		//为每一个channel(即客户端)设置一个唯一标识, 后面登录成功之后直接做为userid返回给客户端
-		String serverGenerateUUID = UUID.randomUUID().toString();
+		String serverGenerateUUID = UUID.randomUUID().toString() + System.currentTimeMillis();
 		ctx.channel().attr(NettyServer.clientKey).set(serverGenerateUUID);
 		System.out.println(ctx.channel().attr(NettyServer.clientKey).get() + "逻辑处理器被添加：handlerAdded()");
 		super.handlerAdded(ctx);
