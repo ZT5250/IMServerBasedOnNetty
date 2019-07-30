@@ -18,6 +18,7 @@ public class ClientLifeCyCleTestHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
+		ctx.channel().attr(NettyServer.clientKey).set(ctx.channel().localAddress().toString() + "_");
 		System.out.println(ctx.channel().attr(NettyServer.clientKey).get() + "ClientLifeCyCleTestHandler channel 准备就绪：channelActive()");
 		super.channelActive(ctx);
 	}

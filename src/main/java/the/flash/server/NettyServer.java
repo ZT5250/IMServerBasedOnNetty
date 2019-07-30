@@ -3,6 +3,7 @@ package the.flash.server;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -50,7 +51,7 @@ public class NettyServer {
                         System.out.println(ch.attr(clientKey).get());
                         ch.pipeline()
                         .addLast(new IMIdleStateHandler())
-                        .addLast(new LifeCyCleTestHandler())
+                        .addLast(LifeCyCleTestHandler.INSTANCE)
                         .addLast(new Spliter(Integer.MAX_VALUE, 7, 4))
                         .addLast(PacketCodecHandler.INSTANCE)
                         .addLast(LoginRequestHandler.INSTANCE)
